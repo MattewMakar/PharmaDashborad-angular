@@ -1,63 +1,105 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Drug } from "services/Drug";
+import { Paper, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, createStyles, Theme, Button } from "@material-ui/core";
+import axios from "axios";
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-});
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      border: "1px solid #888888",
+      background: "#ebf3f3",
 
-function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
-  return { name, calories, fat, carbs, protein };
-}
+      textAlign: "center",
+      margin: "20px auto",
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+      width: "80%",
+    },
+    drug: {
+      cursor: "pointer",
+      "&:hover": {
+        background: "gray",
+      },
+    },
+    table: {},
+  })
+);
 
 const DrugsList = () => {
-
+  const history = useHistory();
+  const [drugs, setDrugs] = useState<Drug[]>([]);
+  useEffect(() => {
+    (async () => {
+      const data = await axios({
+        method: "get",
+        url: "http://localhost:8000/drugs",
+      });
+      setDrugs(data.data);
+    })();
+  }, []);
   const classes = useStyles();
 
+  const handleSelectDrug = (uuid: string) => {
+    history.push(`/${uuid}`);
+  };
+
+  const handleDelete = async (id: string) => {
+    const res = await axios({
+      method: "DELETE",
+      url: `http://localhost:8000/drugs/${id}`,
+    });
+    if (res.status === 200) {
+      const newDrugs = drugs.filter((_) => _.UUID !== id);
+      console.log(newDrugs);
+      setDrugs(newDrugs);
+    }
+  };
+
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} className={classes.root}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell align="right">UUID</TableCell>
+            <TableCell align="right">Date added</TableCell>
+            <TableCell align="right">Quantity</TableCell>
+            <TableCell align="right"> </TableCell>
+            <TableCell align="right"> </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
+          {drugs.map((drug) => (
+            <TableRow className={classes.drug} key={drug.UUID}>
+              <TableCell component="th" scope="row" onClick={() => handleSelectDrug(drug.UUID)}>
+                {drug.name}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell align="right" onClick={() => handleSelectDrug(drug.UUID)}>
+                {drug.UUID}
+              </TableCell>
+              <TableCell align="right" onClick={() => handleSelectDrug(drug.UUID)}>
+                {drug.date_added}
+              </TableCell>
+              <TableCell align="right" onClick={() => handleSelectDrug(drug.UUID)}>
+                {drug.quantity}
+              </TableCell>
+
+              <TableCell align="right">
+                <Button color="primary" onClick={() => history.push(`/edit/${drug.UUID}`)}>
+                  Edit
+                </Button>
+              </TableCell>
+              <TableCell align="right">
+                <Button color="secondary" onClick={() => handleDelete(drug.UUID)}>
+                  Delete
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
-}
+};
 
-export default DrugsList
+export default DrugsList;

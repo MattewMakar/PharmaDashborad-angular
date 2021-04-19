@@ -1,11 +1,11 @@
-<mat-card> 
+<mat-card > 
 <mat-card-title>{{drug.name}}</mat-card-title>
 <mat-card-subtitle>{{drug.UUID}}</mat-card-subtitle>
-<mat-card-content>
-  <img mat-card-image src="../../assets/drug.jpg" [alt]="drug.name" />
+<mat-card-content class="content">
+  <img class="img" mat-card-image src="../../assets/drug.jpg" [alt]="drug.name" />
 
-<p>{{drug.summary}}</p>
-<p>Date added: <strong>{{drug.date_added | date: 'dd/MM/yyyy'}}</strong></p>
+<p class="desc">{{drug.summary}}</p>
+<p>Date added: <strong>{{drug.date_added | date: 'dd/MM/yyyy h:mm a'}}</strong></p>
 <p>Quantity: <strong>{{drug.quantity}}</strong></p>
 </mat-card-content>
 </mat-card>

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Drug } from "../services/Drug";
 import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import { TextField, Grid, Button } from "@material-ui/core";
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-const EditDrug = () => {
+const Form = () => {
   const classes = useStyles();
   let history = useHistory();
   const { id }: { id: string } = useParams();
@@ -40,13 +41,11 @@ const EditDrug = () => {
     summary: "",
   });
   const [submit, setSubmit] = useState(true);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (Drug.name && Drug.UUID) {
-      const res = await axios({ method: "PUT", url: `http://localhost:8000/drugs/${id}`, data: Drug });
-      console.log(res)
+      await axios({ method: "POST", url: `http://localhost:8000/drugs`, data: Drug });
       setSubmit(true);
       history.push("/");
     } else {
@@ -57,15 +56,15 @@ const EditDrug = () => {
     setDrug({ ...Drug, [name]: value });
   };
   useEffect(() => {
-    if (id)
-      (async () => {
-        const data = await axios({ method: "get", url: `http://localhost:8000/Drugs/${id}` });
-        setDrug(data.data);
-      })();
-  }, [id]);
+  if(id)
+  (async () => {
+    const data = await axios({ method: "get", url: `http://localhost:8000/Drugs/${id}` });
+    setDrug(data.data);
+  })();
+}, [id]);
   return (
     <React.Fragment>
-      <h1 className={classes.heading}>Edit A Drug</h1>
+      <h1 className={classes.heading}>Add A Drug</h1>
       <form className={classes.root} autoComplete="off" onSubmit={handleSubmit}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
@@ -115,10 +114,10 @@ const EditDrug = () => {
               className={classes.input}
               value={Drug?.quantity}
               label="Available Quantity"
-              placeholder="enter the Drug's Available Quantity "
+              placeholder="Available Quantity"
               variant="outlined"
               onChange={(e) => handleChange("quantity", e.target.value)}
-              name="cover"
+              name="Quantity"
             />
           </Grid>
           <Grid item xs={12}>
@@ -128,8 +127,8 @@ const EditDrug = () => {
               }}
               className={classes.input}
               value={Drug?.summary}
-              required
               multiline
+              required
               id="outlined-textarea"
               label="Summary"
               placeholder="enter the Drug's summary "
@@ -140,13 +139,13 @@ const EditDrug = () => {
           </Grid>
           <Grid item xs={12}>
             <Button className={classes.button} variant="contained" color="primary" type="submit">
-              Edit
+              Submit
             </Button>
           </Grid>
         </Grid>
       </form>
     </React.Fragment>
   );
-};
+}
 
-export default EditDrug;
+export default Form;

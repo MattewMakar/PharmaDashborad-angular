@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Drug } from '../../Drug';
 
 @Component({
@@ -7,19 +7,11 @@ import { Drug } from '../../Drug';
   styleUrls: ['./drug-card.component.css']
 })
 export class DrugCardComponent implements OnInit {
+  @Input() drug: Drug;
 
-
-  drug={
-  name: "m",
-  UUID: "d",
-  date_added: new Date(),
-  quantity: 0,
-  summary: "s",
-  }
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.drug);
     
   }
 
