@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
-
+//this act as the base structure of my application 
   constructor() { }
 
   ngOnInit(): void {

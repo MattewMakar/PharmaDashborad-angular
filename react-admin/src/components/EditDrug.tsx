@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+// here I used the useParams hook from the react router dom to get the id that was sent in the active route then send a request to the server with id in the url and receive the response and store it in a state variable drug then initialize the form values with the current object and using the onChange event to keep track of the current state of the input fields then on submit I sent the url request to the server using the put method
 const EditDrug = () => {
   const classes = useStyles();
   let history = useHistory();

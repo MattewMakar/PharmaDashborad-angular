@@ -11,7 +11,7 @@ export class DrugDataService {
   constructor(private http: HttpClient) { }
   
 
-
+//here I send a request to the server to get all the available drugs in the database 
   getAllDrugs(): Observable<Drug[]> {
     return this.http.get<Drug[]>('http://localhost:8000/drugs');
   }

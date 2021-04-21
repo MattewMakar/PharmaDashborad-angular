@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
     table: {},
   })
 );
-
+//here I call the axios function with the /drugs url to get all the available drugs and store them inside the drugs state variable this all happens inside the useEffect hook once the component loads I did that using the empty dependency array 
 const DrugsList = () => {
   const history = useHistory();
   const [drugs, setDrugs] = useState<Drug[]>([]);

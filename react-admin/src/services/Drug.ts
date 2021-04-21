@@ -1,3 +1,4 @@
+//here I defined the Drug type to be accessible to all components 
 export interface Drug {
   name: string;
   UUID: string;

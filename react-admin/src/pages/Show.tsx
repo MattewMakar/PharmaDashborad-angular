@@ -5,7 +5,7 @@ import { CardActions, CardHeader ,Card, CardMedia, CardContent, Typography, Butt
 import image from '../assets/drug.jpg'
 import { Drug } from "services/Drug";
 import { useHistory  } from "react-router-dom";
-
+//here I used the useParams hook from react-router-dom to get the id from the active route then send a get request to the server with the id and store the returned drug in a state variable and render it in this component 
 const useStyles = makeStyles({
   root: {
     width: "100%"

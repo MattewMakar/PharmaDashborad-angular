@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+//here I declared a state object variable to keep track of all required properties of the drug and defined an onSubmit function that send the object in the request with the post method to the server 
 const Form = () => {
   const classes = useStyles();
   let history = useHistory();

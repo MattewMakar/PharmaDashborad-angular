@@ -20,7 +20,7 @@ const useStyles = makeStyles(() =>
     },
   })
 );
-
+//here I load the list component with a button to direct the user to the add new route 
 const DrugList = () => {
   const classes = useStyles();
   const history = useHistory();
